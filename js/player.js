@@ -2,7 +2,7 @@
 // Video sync: host controls, viewer sync, like
 
 import { db } from './firebase.js';
-import { ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { ref, set, get, onValue, push, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import { showToast } from './ui.js';
 import { icons } from './icons.js';
 
