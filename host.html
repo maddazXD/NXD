@@ -778,8 +778,8 @@ function initDashboard() {
 
 // ── OVERVIEW LISTENERS ────────────────────────────────
 function listenOverview() {
-  onValue(ref(db, 'stream/viewers'), s => {
-    document.getElementById('statViewers').textContent = s.val() ?? 0;
+  onValue(ref(db, 'stream/activeViewers'), s => {
+  document.getElementById('statViewers').textContent = s.exists() ? Object.keys(s.val()).length : 0;
   });
   onValue(ref(db, 'stream/likes'), s => {
     document.getElementById('statLikes').textContent = s.val() ?? 0;
@@ -1239,37 +1239,10 @@ async function endAcaraSession() {
   if (acaraTimerInterval) { clearInterval(acaraTimerInterval); acaraTimerInterval = null; }
 
   try {
-    // ── Hapus semua tiket (users + uids + pending) dari Firebase ──
-    const [usersSnap, uidsSnap, pendingSnap] = await Promise.all([
-      get(ref(db, 'users')),
-      get(ref(db, 'uids')),
-      get(ref(db, 'pending')),
-    ]);
-
-    const writes = [];
-
-    // Hapus semua user
-    if (usersSnap.exists()) {
-      Object.keys(usersSnap.val()).forEach(k => {
-        writes.push(set(ref(db, `users/${k}`), null));
-      });
-    }
-
-    // Hapus semua index UID
-    if (uidsSnap.exists()) {
-      Object.keys(uidsSnap.val()).forEach(k => {
-        writes.push(set(ref(db, `uids/${k}`), null));
-      });
-    }
-
-    // Hapus semua pending
-    if (pendingSnap.exists()) {
-      Object.keys(pendingSnap.val()).forEach(k => {
-        writes.push(set(ref(db, `pending/${k}`), null));
-      });
-    }
-
-    await Promise.all(writes);
+        // Hapus bersih dengan 1 tembakan langsung ke root node (mencegah Freeze)
+    await set(ref(db, 'users'), null);
+    await set(ref(db, 'uids'), null);
+    await set(ref(db, 'pending'), null);
 
     // Tandai acara selesai
     await set(ref(db, 'stream/acara'), {
