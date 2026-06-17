@@ -207,20 +207,20 @@ function setupShareBtn() {
 
 // ── VIEWERS ───────────────────────────────────────────
 export function trackViewer() {
-  get(ref(db, 'stream/viewers')).then(snap => {
-    set(ref(db, 'stream/viewers'), (snap.val() || 0) + 1);
-    window.addEventListener('beforeunload', () => {
-      get(ref(db, 'stream/viewers')).then(s =>
-        set(ref(db, 'stream/viewers'), Math.max(0, (s.val() || 1) - 1))
-      );
-    });
-  });
+  // Buat node koneksi unik untuk setiap perangkat yang masuk
+  const myConnRef = push(ref(db, 'stream/activeViewers'));
+  // Firebase server akan otomatis menghapus node ini jika user offline/keluar
+  onDisconnect(myConnRef).remove();
+  // Set status online
+  set(myConnRef, true);
 }
 
 function listenViewers() {
-  onValue(ref(db, 'stream/viewers'), snap => {
+  onValue(ref(db, 'stream/activeViewers'), snap => {
+    // Hitung jumlah ID unik yang sedang online
+    const count = snap.exists() ? Object.keys(snap.val()).length : 0;
     const el = document.getElementById('viewerCount');
-    if (el) el.textContent = snap.val() || 1;
+    if (el) el.textContent = count;
   });
 
   // Bank info + QRIS for donate panel
