@@ -302,7 +302,6 @@ export function watchAcaraSession(onExpired) {
         if (!expired) {
           expired = true;
           // Hapus semua tiket saat waktu habis (countdown sisi client)
-          purgeAllTickets();
           onExpired('Waktu acara telah habis. Beli tiket baru untuk acara berikutnya.');
         }
         return;
