@@ -611,7 +611,7 @@ async function attemptLogin() {
       clearAttempts();
       localStorage.setItem(HOST_SESSION_KEY, JSON.stringify({
         token: 'authenticated',
-        expires: Date.now() + 12 * 60 * 60 * 1000,
+        expires: Date.now() + 6 * 60 * 60 * 1000,
       }));
       gateEl.classList.add('hidden');
       appEl.classList.remove('hidden');
