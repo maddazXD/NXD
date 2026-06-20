@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NobarXD — Host Dashboard</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/host.css">
+</head>
+<body>
+
+<!-- ── LOGIN GATE ── -->
+<div class="host-gate" id="hostGate">
+  <div class="host-gate-card">
+    <div class="host-gate-logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-h)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2.18"/>
+        <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/>
+        <line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>
+      </svg>
+      <span>NobarXD</span>
+    </div>
+    <h2>Host Dashboard</h2>
+    <p>Masukkan password host untuk mengakses panel kontrol.</p>
+    <div class="gate-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="gatePassword" placeholder="Password host..." autocomplete="current-password">
+    </div>
+    <span class="gate-error" id="gateErr"></span>
+    <button class="btn btn-primary btn-lg w-full" id="gateLoginBtn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg>
+      Masuk sebagai Host
+    </button>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ── -->
+<div class="host-app hidden" id="hostApp">
+
+  <!-- Sidebar -->
+  <aside class="h-sidebar" id="hSidebar">
+    <div class="h-sidebar-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-h)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2.18"/>
+        <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+        <line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/>
+        <line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>
+      </svg>
+      <span>NobarXD</span>
+      <div class="host-badge">HOST</div>
+    </div>
+
+    <nav class="h-nav">
+      <button class="h-nav-item active" data-page="overview">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="h-nav-item" data-page="stream">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Kontrol Stream
+      </button>
+      <button class="h-nav-item" data-page="users">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Kelola Users
+        <span class="nav-badge" id="navPendingBadge" style="display:none">0</span>
+      </button>
+      <button class="h-nav-item" data-page="payment">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Info Rekening
+      </button>
+      <button class="h-nav-item" data-page="security">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Keamanan
+      </button>
+    </nav>
+
+    <div class="h-sidebar-footer">
+      <a href="watch.html" target="_blank" class="btn btn-ghost btn-sm w-full" style="margin-bottom:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+        Buka Halaman Nobar
+      </a>
+      <button class="btn btn-ghost btn-sm w-full" id="hostLogoutBtn" style="color:var(--red);border-color:rgba(239,68,68,.2)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Mobile topbar -->
+  <header class="h-topbar">
+    <button class="h-menu-btn" id="hMenuBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <span class="h-topbar-title" id="hTopbarTitle">Overview</span>
+    <div class="live-indicator" id="liveIndicator">
+      <span class="live-dot"></span> LIVE
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="h-main">
+
+    <!-- ══ PAGE: OVERVIEW ══ -->
+    <div class="h-page active" id="pageOverview">
+      <div class="h-page-header">
+        <h1>Overview</h1>
+        <p>Status acara nobar kamu secara realtime</p>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(109,40,217,.15);color:var(--accent-h)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Penonton Live</div>
+            <div class="stat-value" id="statViewers">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(245,158,11,.12);color:var(--gold)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Total Likes</div>
+            <div class="stat-value" id="statLikes">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(34,197,94,.12);color:var(--green)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">User Disetujui</div>
+            <div class="stat-value" id="statApproved">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(239,68,68,.12);color:var(--red)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-label">Menunggu Konfirmasi</div>
+            <div class="stat-value" id="statPending" style="color:var(--gold)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stream status card -->
+      <div class="h-card">
+        <div class="h-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Status Stream
+        </div>
+        <div class="stream-status-row">
+          <div>
+            <div class="stream-status-label">Film Aktif</div>
+            <div class="stream-status-value" id="ovFilmTitle">Belum ada film</div>
+          </div>
+          <div>
+            <div class="stream-status-label">Status</div>
+            <div id="ovStreamState">
+              <span class="status-pill pill-idle">Idle</span>
+            </div>
+          </div>
+          <div>
+            <div class="stream-status-label">Quick Action</div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-primary btn-sm" id="ovPlayBtn">▶ Play</button>
+              <button class="btn btn-ghost btn-sm" id="ovPauseBtn">⏸ Pause</button>
+              <button class="btn btn-danger btn-sm" id="ovStopBtn">■ Stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acara timer card -->
+      <div class="h-card" id="acaraCard">
+        <div class="h-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Sesi Acara
+        </div>
+        <div class="acara-status-row">
+          <div>
+            <div class="stream-status-label">Status Sesi</div>
+            <div id="acaraStatusBadge"><span class="status-pill pill-idle">Belum Dimulai</span></div>
+          </div>
+          <div>
+            <div class="stream-status-label">Sisa Waktu</div>
+            <div class="acara-timer" id="acaraTimer">—</div>
+          </div>
+          <div>
+            <div class="stream-status-label">Durasi (menit)</div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <input class="h-input" type="number" id="acaraDurasi" value="140" min="10" max="480" style="width:90px;padding:6px 10px">
+              <button class="btn btn-primary btn-sm" id="acaraStartBtn">▶ Mulai Sesi</button>
+              <button class="btn btn-danger btn-sm" id="acaraEndBtn">■ Akhiri</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent pending -->
+      <div class="h-card">
+        <div class="h-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Pendaftar Menunggu
+          <button class="btn btn-ghost btn-sm" style="margin-left:auto;font-size:12px" data-page="users" id="goToUsersBtn">Lihat Semua →</button>
+        </div>
+        <div id="ovPendingList">
+          <div class="empty-state">Tidak ada yang menunggu saat ini.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: STREAM CONTROL ══ -->
+    <div class="h-page" id="pageStream">
+      <div class="h-page-header">
+        <h1>Kontrol Stream</h1>
+        <p>Atur video, judul, dan sinkronisasi semua penonton</p>
+      </div>
+
+      <div class="stream-grid">
+        <!-- Load video -->
+        <div class="h-card">
+          <div class="h-card-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Muat Video
+          </div>
+          <div class="form-stack">
+            <div class="form-row">
+              <label class="h-label">Tipe Sumber</label>
+              <div style="display:flex;gap:16px;padding:2px 0 6px">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer">
+                  <input type="radio" name="videoType" value="file" id="videoTypeFile" checked> File Langsung
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer">
+                  <input type="radio" name="videoType" value="live" id="videoTypeLive"> Live Embed
+                </label>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="h-label">URL Video / Stream</label>
+              <input class="h-input" type="url" id="streamVideoUrl" placeholder="https://example.com/film.mp4">
+              <p class="h-hint" id="streamUrlHint">Mendukung MP4 langsung, HLS (.m3u8), atau URL stream lainnya</p>
+            </div>
+            <div class="form-row">
+              <label class="h-label">Judul Film</label>
+              <input class="h-input" type="text" id="streamVideoTitle" placeholder="Nama film yang ditampilkan...">
+            </div>
+            <button class="btn btn-primary" id="streamLoadBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Muat & Tayangkan
+            </button>
+          </div>
+        </div>
+
+        <!-- Playback control -->
+        <div class="h-card">
+          <div class="h-card-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            Kontrol Pemutaran
+          </div>
+
+          <div class="playback-now-playing">
+            <div class="np-label">Sedang Diputar</div>
+            <div class="np-title" id="streamNowPlaying">Belum ada film</div>
+            <div class="np-state" id="streamState"><span class="status-pill pill-idle">Idle</span></div>
+          </div>
+
+          <div class="playback-btns">
+            <button class="pbtn pbtn-play" id="pbPlay">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Play
+            </button>
+            <button class="pbtn pbtn-pause" id="pbPause">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Pause
+            </button>
+            <button class="pbtn pbtn-sync" id="pbSync">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+              Sync
+            </button>
+            <button class="pbtn pbtn-stop" id="pbStop">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+              Stop
+            </button>
+          </div>
+
+          <div class="h-divider"></div>
+
+          <div class="form-row">
+            <label class="h-label">Loncat ke Waktu (detik)</label>
+            <div style="display:flex;gap:8px">
+              <input class="h-input" type="number" id="seekInput" placeholder="Contoh: 3600" min="0" style="flex:1">
+              <button class="btn btn-ghost" id="seekBtn">Loncat</button>
+            </div>
+            <p class="h-hint">Semua penonton akan disinkronkan ke waktu ini</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview mini -->
+      <div class="h-card" style="margin-top:0">
+        <div class="h-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Preview Host
+          <span style="margin-left:8px;font-size:11px;color:var(--text-2)">(hanya untuk host)</span>
+        </div>
+        <div class="host-preview-wrap">
+          <video id="hostPreviewVideo" controls playsinline style="width:100%;max-height:360px;border-radius:8px;background:#000;display:none"></video>
+          <iframe id="hostPreviewIframe" allow="autoplay; fullscreen" style="width:100%;height:360px;border:0;border-radius:8px;background:#000;display:none"></iframe>
+          <div class="host-preview-placeholder" id="hostPreviewPlaceholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            <p>Video akan muncul setelah URL dimuat</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: KELOLA USERS ══ -->
+    <div class="h-page" id="pageUsers">
+      <div class="h-page-header">
+        <h1>Kelola Users</h1>
+        <p>Setujui pembayaran dan lihat semua member nobar</p>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="user-filter-tabs">
+        <button class="u-tab active" data-filter="pending">
+          Menunggu
+          <span class="u-tab-count" id="tabCountPending">0</span>
+        </button>
+        <button class="u-tab" data-filter="approved">
+          Disetujui
+          <span class="u-tab-count" id="tabCountApproved">0</span>
+        </button>
+        <button class="u-tab" data-filter="rejected">
+          Ditolak
+          <span class="u-tab-count" id="tabCountRejected">0</span>
+        </button>
+      </div>
+
+      <!-- User list -->
+      <div class="user-list" id="userListContainer">
+        <div class="empty-state">Memuat data...</div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: INFO REKENING ══ -->
+    <div class="h-page" id="pagePayment">
+      <div class="h-page-header">
+        <h1>Info Rekening</h1>
+        <p>Rekening &amp; QRIS yang ditampilkan ke penonton di panel Donate dan halaman pendaftaran</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="payment-edit-grid">
+
+        <!-- Kolom kiri: Form -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- QRIS upload -->
+          <div class="h-card">
+            <div class="h-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              QRIS
+            </div>
+            <div class="qris-upload-zone" id="qrisUploadZone">
+              <input type="file" id="qrisFileInput" accept="image/*" style="display:none">
+              <img id="qrisPreviewImg" style="display:none;width:100%;max-width:220px;border-radius:10px;margin:0 auto" alt="QRIS Preview">
+              <div id="qrisUploadPlaceholder">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <p>Klik atau seret foto QRIS kamu</p>
+                <span>PNG / JPG</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-primary" id="qrisUploadBtn" style="flex:1">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                Pilih Gambar QRIS
+              </button>
+              <button class="btn btn-ghost" id="qrisRemoveBtn" style="display:none;color:var(--red);border-color:rgba(239,68,68,.2)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                Hapus
+              </button>
+            </div>
+            <p class="h-hint" style="margin-top:8px">Gambar QRIS akan disimpan ke Firebase dan tampil langsung ke semua penonton.</p>
+          </div>
+
+          <!-- Info rekening teks -->
+          <div class="h-card">
+            <div class="h-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Transfer / E-Wallet
+            </div>
+            <div class="form-stack">
+              <div class="form-row">
+                <label class="h-label">Info Rekening</label>
+                <textarea class="h-input h-textarea" id="bankInfoTextarea" rows="5"
+                  placeholder="Contoh:&#10;BCA: 1234567890 (Nama Kamu)&#10;GoPay: 081234567890&#10;DANA: 081234567890&#10;OVO: 081234567890"></textarea>
+                <p class="h-hint">Satu rekening per baris. Kosongkan jika hanya pakai QRIS.</p>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-lg" id="saveBankBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Simpan Semua
+          </button>
+
+          <!-- Konfirmasi Donasi Manual -->
+          <div class="h-card">
+            <div class="h-card-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Konfirmasi Donasi Masuk
+            </div>
+            <p class="h-hint" style="margin-bottom:12px">
+              Cek saldo masuk di e-wallet/m-banking kamu, cocokkan nama di catatan transfer, lalu catat di sini.
+              Otomatis muncul di ticker atas kolom komentar watch.html — gak ada cara penonton trigger ini sendiri.
+            </p>
+
+            <div class="form-stack">
+              <div class="form-row" style="display:grid;grid-template-columns:1fr 130px;gap:10px">
+                <div>
+                  <label class="h-label">Nama Donatur</label>
+                  <input class="h-input" type="text" id="donateNameField" placeholder="Sesuai catatan transfer, cth: Bagas" maxlength="30">
+                </div>
+                <div>
+                  <label class="h-label">Nominal (Rp)</label>
+                  <input class="h-input" type="number" id="donateAmountField" placeholder="10000" min="500" step="500">
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="donateConfirmBtn" style="margin-top:12px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Catat Donasi
+            </button>
+
+            <div style="height:1px;background:var(--border);margin:16px 0"></div>
+
+            <div class="h-card-header" style="margin-bottom:10px;font-size:12px">Riwayat Donasi (sesi ini)</div>
+            <div id="donationHistoryList" style="display:flex;flex-direction:column;gap:8px">
+              <span style="color:var(--text-2);font-size:13px">Belum ada donasi tercatat.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom kanan: Preview -->
+        <div class="h-card" style="align-self:start">
+          <div class="h-card-header" style="margin-bottom:14px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Preview (tampilan penonton)
+          </div>
+          <div class="bank-preview" id="bankPreview">
+            <span style="color:var(--text-2);font-size:13px">Belum ada info pembayaran.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ PAGE: KEAMANAN ══ -->
+    <div class="h-page" id="pageSecurity">
+      <div class="h-page-header">
+        <h1>Keamanan</h1>
+        <p>Ubah password host — disimpan sebagai hash terenkripsi, tidak ada yang bisa membacanya</p>
+      </div>
+
+      <div class="h-card" style="max-width:480px">
+        <div class="h-card-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Ganti Password Host
+        </div>
+
+        <div style="background:rgba(109,40,217,.07);border:1px solid rgba(109,40,217,.18);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;color:var(--text-2);line-height:1.6">
+          🔒 Password disimpan sebagai <b>SHA-256 hash</b> di Firebase. Bahkan pemilik Firebase tidak bisa membaca password aslimu.
+        </div>
+
+        <div class="form-stack">
+          <div class="form-row">
+            <label class="h-label">Password Lama</label>
+            <input class="h-input" type="password" id="secOldPw" placeholder="Password saat ini..." autocomplete="current-password">
+          </div>
+          <div class="form-row">
+            <label class="h-label">Password Baru</label>
+            <input class="h-input" type="password" id="secNewPw" placeholder="Minimal 8 karakter..." autocomplete="new-password">
+          </div>
+          <div class="form-row">
+            <label class="h-label">Konfirmasi Password Baru</label>
+            <input class="h-input" type="password" id="secConfirmPw" placeholder="Ulangi password baru..." autocomplete="new-password">
+          </div>
+          <span id="secErr" style="font-size:12px;color:var(--red);min-height:16px"></span>
+          <button class="btn btn-primary" id="secSaveBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Simpan Password Baru
+          </button>
+        </div>
+
+        <div class="h-divider" style="margin:20px 0"></div>
+
+        <div class="h-card-header" style="margin-bottom:12px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Info Sesi
+        </div>
+        <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;color:var(--text-2);line-height:1.8">
+          Sesi host berlaku <b>12 jam</b> sejak login terakhir.<br>
+          Maksimal <b>5 percobaan</b> salah → akses dikunci <b>5 menit</b>.<br>
+          Sesi otomatis hangus saat tab/browser ditutup.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="h-sidebar-overlay" id="hSidebarOverlay"></div>
+
+<!-- Toast -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script type="module">
+import { db } from './js/firebase.js';
+import {
+  ref, set, get, push, onValue
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { approveUser, rejectUser, escHTML, exposeHostGlobals } from './js/auth.js';
+import { showToast, formatRp } from './js/ui.js';
+
+// ──────────────────────────────────────────────────────
+// AUTH — Password disimpan sebagai SHA-256 hash di Firebase
+// path: host/passwordHash
+// Tidak ada password plaintext di kode ini sama sekali.
+// ──────────────────────────────────────────────────────
+const HOST_SESSION_KEY = 'nobar_host_session';
+const MAX_ATTEMPTS     = 5;    // max salah sebelum lockout
+const LOCKOUT_MS       = 5 * 60 * 1000; // 5 menit lockout
+
+// ── RATE LIMIT (localStorage) ─────────────────────────
+function getAttemptData() {
+  try { return JSON.parse(localStorage.getItem('nobar_host_attempts') || '{}'); }
+  catch { return {}; }
+}
+function saveAttemptData(data) {
+  localStorage.setItem('nobar_host_attempts', JSON.stringify(data));
+}
+function isLockedOut() {
+  const d = getAttemptData();
+  if (d.lockedUntil && Date.now() < d.lockedUntil) return d.lockedUntil;
+  return false;
+}
+function recordFailedAttempt() {
+  const d = getAttemptData();
+  d.attempts = (d.attempts || 0) + 1;
+  if (d.attempts >= MAX_ATTEMPTS) {
+    d.lockedUntil = Date.now() + LOCKOUT_MS;
+    d.attempts = 0;
+  }
+  saveAttemptData(d);
+  return d.attempts;
+}
+function clearAttempts() {
+  localStorage.removeItem('nobar_host_attempts');
+}
+
+// ── SHA-256 hash (Web Crypto API, built-in browser) ───
+async function sha256(text) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// ── GATE LOGIN ────────────────────────────────────────
+const gateEl  = document.getElementById('hostGate');
+const appEl   = document.getElementById('hostApp');
+const gateErr = document.getElementById('gateErr');
+
+function showGateError(msg) {
+  gateErr.textContent = msg;
+  setTimeout(() => gateErr.textContent = '', 4000);
+}
+
+function checkHostSession() {
+  // Validasi token sesi: harus ada & belum expired (12 jam)
+  try {
+    const raw = localStorage.getItem(HOST_SESSION_KEY);
+    if (!raw) return false;
+    const { token, expires } = JSON.parse(raw);
+    return token === 'authenticated' && Date.now() < expires;
+  } catch { return false; }
+}
+
+// Pasang event listener gate langsung (inline, tidak pakai fungsi terpisah)
+const pwInput  = document.getElementById('gatePassword');
+const loginBtn = document.getElementById('gateLoginBtn');
+if (pwInput)  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+if (loginBtn) loginBtn.addEventListener('click', attemptLogin);
+
+if (checkHostSession()) {
+  gateEl.classList.add('hidden');
+  appEl.classList.remove('hidden');
+  initDashboard();
+} else {
+  gateEl.classList.remove('hidden');
+  appEl.classList.add('hidden');
+
+  get(ref(db, 'host/passwordHash')).then(snap => {
+    if (!snap.exists()) showFirstTimeSetup();
+  }).catch(err => {
+    console.error('Firebase error:', err);
+    showGateError('Gagal terhubung ke Firebase. Cek koneksi.');
+  });
+
+  const lockUntil = isLockedOut();
+  if (lockUntil) {
+    const menit = Math.ceil((lockUntil - Date.now()) / 60000);
+    showGateError(`Terlalu banyak percobaan. Tunggu ${menit} menit.`);
+    document.getElementById('gateLoginBtn').disabled = true;
+    document.getElementById('gatePassword').disabled = true;
+  }
+}
+
+async function attemptLogin() {
+  // Cek lockout
+  const lockUntil = isLockedOut();
+  if (lockUntil) {
+    const menit = Math.ceil((lockUntil - Date.now()) / 60000);
+    showGateError(`Akses terkunci. Coba lagi dalam ${menit} menit.`);
+    return;
+  }
+
+  const pw  = document.getElementById('gatePassword').value;
+  const btn = document.getElementById('gateLoginBtn');
+  if (!pw) { showGateError('Masukkan password dulu.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Memeriksa...';
+
+  try {
+    // Hash password yang dimasukkan
+    const inputHash = await sha256(pw);
+
+    // Ambil hash yang tersimpan di Firebase
+    const snap = await get(ref(db, 'host/passwordHash'));
+
+    if (!snap.exists()) {
+      showGateError('Password belum disetup. Refresh halaman.');
+      btn.disabled = false; btn.textContent = 'Masuk sebagai Host';
+      return;
+    }
+
+    const storedHash = snap.val();
+
+    if (inputHash === storedHash) {
+      // ✅ Benar — buat sesi 12 jam
+      clearAttempts();
+      localStorage.setItem(HOST_SESSION_KEY, JSON.stringify({
+        token: 'authenticated',
+        expires: Date.now() + 12 * 60 * 60 * 1000,
+      }));
+      gateEl.classList.add('hidden');
+      appEl.classList.remove('hidden');
+      initDashboard();
+    } else {
+      // ❌ Salah — catat percobaan
+      const attempts = recordFailedAttempt();
+      const sisa = MAX_ATTEMPTS - attempts;
+      if (sisa > 0) {
+        showGateError(`Password salah. Sisa percobaan: ${sisa}`);
+      } else {
+        showGateError(`Terlalu banyak percobaan. Akses dikunci 5 menit.`);
+        btn.disabled = true;
+        document.getElementById('gatePassword').disabled = true;
+      }
+      document.getElementById('gatePassword').value = '';
+      document.getElementById('gatePassword').focus();
+      btn.disabled = false; btn.textContent = 'Masuk sebagai Host';
+    }
+  } catch (err) {
+    console.error(err);
+    showGateError('Gagal memeriksa. Cek koneksi internet.');
+    btn.disabled = false; btn.textContent = 'Masuk sebagai Host';
+  }
+}
+
+// ── FIRST TIME SETUP ──────────────────────────────────
+function showFirstTimeSetup() {
+  const card = document.querySelector('.host-gate-card');
+  card.innerHTML = `
+    <div class="host-gate-logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent-h)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2.18"/>
+        <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+        <line x1="2" y1="12" x2="22" y2="12"/>
+      </svg>
+      <span>NobarXD</span>
+    </div>
+    <h2>Setup Password Host</h2>
+    <p style="color:var(--text-2);font-size:13px;line-height:1.6">
+      Pertama kali buka host dashboard. Buat password baru — akan disimpan sebagai hash terenkripsi di Firebase, <b>tidak ada yang bisa membacanya</b>.
+    </p>
+    <div class="gate-input-wrap" style="margin-top:4px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="setupPw1" placeholder="Password baru..." autocomplete="new-password">
+    </div>
+    <div class="gate-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="setupPw2" placeholder="Konfirmasi password..." autocomplete="new-password">
+    </div>
+    <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--text-2);line-height:1.6">
+      ⚠️ Gunakan password yang kuat — minimal 8 karakter, kombinasi huruf &amp; angka. <b>Catat baik-baik</b>, tidak bisa dipulihkan kecuali edit langsung di Firebase Console.
+    </div>
+    <span class="gate-error" id="setupErr" style="min-height:16px;font-size:12px;color:var(--red)"></span>
+    <button class="btn btn-primary btn-lg w-full" id="setupSubmitBtn">
+      Simpan Password &amp; Masuk
+    </button>
+  `;
+
+  document.getElementById('setupSubmitBtn').addEventListener('click', async () => {
+    const pw1 = document.getElementById('setupPw1').value;
+    const pw2 = document.getElementById('setupPw2').value;
+    const errEl = document.getElementById('setupErr');
+
+    if (!pw1) { errEl.textContent = 'Password tidak boleh kosong.'; return; }
+    if (pw1.length < 8) { errEl.textContent = 'Password minimal 8 karakter.'; return; }
+    if (pw1 !== pw2) { errEl.textContent = 'Konfirmasi password tidak cocok.'; return; }
+
+    const btn = document.getElementById('setupSubmitBtn');
+    btn.disabled = true; btn.textContent = 'Menyimpan...';
+
+    try {
+      const hash = await sha256(pw1);
+      await set(ref(db, 'host/passwordHash'), hash);
+
+      // Langsung buat sesi
+      localStorage.setItem(HOST_SESSION_KEY, JSON.stringify({
+        token: 'authenticated',
+        expires: Date.now() + 12 * 60 * 60 * 1000,
+      }));
+      gateEl.classList.add('hidden');
+      appEl.classList.remove('hidden');
+      initDashboard();
+    } catch (err) {
+      console.error(err);
+      errEl.textContent = 'Gagal menyimpan. Cek koneksi.';
+      btn.disabled = false; btn.textContent = 'Simpan Password & Masuk';
+    }
+  });
+}
+
+// ── INIT DASHBOARD ────────────────────────────────────
+function initDashboard() {
+  // Semua DOM reference di dalam fungsi ini — aman dari temporal dead zone
+  const pages = {
+    overview: document.getElementById('pageOverview'),
+    stream:   document.getElementById('pageStream'),
+    users:    document.getElementById('pageUsers'),
+    payment:  document.getElementById('pagePayment'),
+    security: document.getElementById('pageSecurity'),
+  };
+
+  const pageTitles = {
+    overview: 'Overview',
+    stream:   'Kontrol Stream',
+    users:    'Kelola Users',
+    payment:  'Info Rekening',
+    security: 'Keamanan',
+  };
+
+  const sidebarEl = document.getElementById('hSidebar');
+  const overlayEl = document.getElementById('hSidebarOverlay');
+
+  function closeSidebar() {
+    sidebarEl?.classList.remove('open');
+    overlayEl?.classList.remove('show');
+  }
+
+  function switchPage(name) {
+    Object.entries(pages).forEach(([k, el]) => el?.classList.toggle('active', k === name));
+    document.querySelectorAll('.h-nav-item').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+    const titleEl = document.getElementById('hTopbarTitle');
+    if (titleEl) titleEl.textContent = pageTitles[name] || name;
+    closeSidebar();
+    if (name === 'users') renderUserList(currentFilter);
+  }
+
+  // Pasang event listener navigation
+  document.querySelectorAll('.h-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => switchPage(btn.dataset.page));
+  });
+  document.getElementById('goToUsersBtn')?.addEventListener('click', () => switchPage('users'));
+  document.getElementById('hMenuBtn')?.addEventListener('click', () => {
+    sidebarEl?.classList.add('open');
+    overlayEl?.classList.add('show');
+  });
+  overlayEl?.addEventListener('click', closeSidebar);
+  document.getElementById('hostLogoutBtn')?.addEventListener('click', () => {
+    localStorage.removeItem(HOST_SESSION_KEY);
+    location.reload();
+  });
+
+  exposeHostGlobals();
+  window.hostApprove = async (pendingKey) => { await approveUser(pendingKey); };
+  window.hostReject  = async (pendingKey) => { if (!confirm('Tolak pendaftaran ini?')) return; await rejectUser(pendingKey); };
+
+  listenOverview();
+  listenStreamStatus();
+  listenBankInfo();
+  initStreamControls();
+  initUserFilters();
+  initAcaraControls();
+  initDonationManual();
+  renderUserList('pending');
+}
+
+// ── OVERVIEW LISTENERS ────────────────────────────────
+function listenOverview() {
+  onValue(ref(db, 'stream/viewers'), s => {
+    document.getElementById('statViewers').textContent = s.val() ?? 0;
+  });
+  onValue(ref(db, 'stream/likes'), s => {
+    document.getElementById('statLikes').textContent = s.val() ?? 0;
+  });
+  onValue(ref(db, 'users'), s => {
+    const users = s.val() || {};
+    const approved = Object.values(users).filter(u => u.status === 'approved').length;
+    document.getElementById('statApproved').textContent = approved;
+  });
+  onValue(ref(db, 'pending'), s => {
+    const all = s.val() || {};
+    const pending = Object.values(all).filter(u => u.status === 'pending');
+    const count = pending.length;
+    document.getElementById('statPending').textContent = count;
+
+    // nav badge
+    const badge = document.getElementById('navPendingBadge');
+    if (count > 0) { badge.textContent = count; badge.style.display = 'inline-flex'; }
+    else badge.style.display = 'none';
+
+    // overview mini list
+    const container = document.getElementById('ovPendingList');
+    if (!container) return;
+    if (pending.length === 0) {
+      container.innerHTML = '<div class="empty-state">Tidak ada yang menunggu saat ini.</div>';
+      return;
+    }
+    container.innerHTML = '';
+    pending.slice(0, 3).forEach(u => {
+      const row = document.createElement('div');
+      row.className = 'ov-pending-row';
+      row.innerHTML = `
+        <div class="ov-avatar">${escHTML(u.name[0].toUpperCase())}</div>
+        <div class="ov-info">
+          <div class="ov-name">${escHTML(u.name)}</div>
+          <div class="ov-meta">${timeAgo(u.createdAt)}</div>
+        </div>
+        ${u.proofImage ? `<img src="${u.proofImage}" class="ov-proof" alt="Bukti">` : ''}
+        <div class="ov-actions">
+          <button class="btn btn-sm" style="background:var(--green-soft);color:var(--green);border-color:rgba(34,197,94,.3)"
+            onclick="hostApprove('${u.pendingKey}')">✓</button>
+          <button class="btn btn-sm btn-danger" onclick="hostReject('${u.pendingKey}')">✕</button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+    if (pending.length > 3) {
+      container.innerHTML += `<div style="text-align:center;padding:8px;font-size:12px;color:var(--text-2)">+${pending.length - 3} lainnya menunggu</div>`;
+    }
+  });
+}
+
+// ── STREAM STATUS ─────────────────────────────────────
+let currentVideoType = 'file';
+
+function listenStreamStatus() {
+  onValue(ref(db, 'stream/video'), s => {
+    const data = s.val() || {};
+    const title = data.title || 'Belum ada film';
+    const state = data.state || 'idle';
+    currentVideoType = data.type || 'file';
+
+    document.getElementById('ovFilmTitle').textContent = title;
+    document.getElementById('streamNowPlaying').textContent = title;
+
+    const pillHTML = statePill(state);
+    document.getElementById('ovStreamState').innerHTML  = pillHTML;
+    document.getElementById('streamState').innerHTML    = pillHTML;
+
+    // Live indicator on topbar
+    const liveEl = document.getElementById('liveIndicator');
+    liveEl.classList.toggle('is-live', state === 'play');
+
+    // Host preview
+    const vid    = document.getElementById('hostPreviewVideo');
+    const iframe = document.getElementById('hostPreviewIframe');
+    const ph     = document.getElementById('hostPreviewPlaceholder');
+
+    if (data.url && currentVideoType === 'live') {
+      // Live embed (vdo.ninja, OBS browser source, dst) — iframe, gak ada seek/sync
+      vid.pause();
+      vid.style.display = 'none';
+      if (state === 'play') {
+        if (iframe.src !== data.url) iframe.src = data.url;
+        iframe.style.display = 'block';
+        ph.style.display = 'none';
+      } else {
+        iframe.style.display = 'none';
+        iframe.src = '';
+        ph.style.display = 'flex';
+      }
+    } else if (data.url) {
+      // File langsung — <video> tag, full sync play/pause/seek
+      iframe.style.display = 'none';
+      iframe.src = '';
+      if (vid.src !== data.url) { vid.src = data.url; vid.load(); }
+      vid.style.display = 'block';
+      ph.style.display  = 'none';
+      if (data.state === 'play') {
+        if (Math.abs(vid.currentTime - (data.seekTo || 0)) > 3) vid.currentTime = data.seekTo || 0;
+        vid.play().catch(() => {});
+      } else {
+        vid.pause();
+      }
+    } else {
+      vid.style.display = 'none';
+      iframe.style.display = 'none';
+      iframe.src = '';
+      ph.style.display = 'flex';
+    }
+
+    // Sync & Seek cuma relevan buat file langsung, gak ada konsep "waktu" di live embed
+    const isLive = currentVideoType === 'live' && !!data.url;
+    const syncBtn   = document.getElementById('pbSync');
+    const seekBtn   = document.getElementById('seekBtn');
+    const seekInput = document.getElementById('seekInput');
+    [syncBtn, seekBtn, seekInput].forEach(el => { if (el) el.disabled = isLive; });
+    if (syncBtn) syncBtn.style.opacity = isLive ? '.4' : '';
+  });
+}
+
+function statePill(state) {
+  const map = {
+    play:  '<span class="status-pill pill-live">▶ Playing</span>',
+    pause: '<span class="status-pill pill-pause">⏸ Paused</span>',
+    stop:  '<span class="status-pill pill-idle">■ Stopped</span>',
+    idle:  '<span class="status-pill pill-idle">Idle</span>',
+  };
+  return map[state] || map.idle;
+}
+
+// ── STREAM CONTROLS ───────────────────────────────────
+function initStreamControls() {
+  // Ganti hint pas tipe sumber diganti
+  document.querySelectorAll('input[name="videoType"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const isLive = document.getElementById('videoTypeLive').checked;
+      document.getElementById('streamUrlHint').textContent = isLive
+        ? 'Link halaman live embed (vdo.ninja, OBS browser source, dst) — ditampilkan via iframe, gak bisa di-seek'
+        : 'Mendukung MP4 langsung, HLS (.m3u8), atau URL stream lainnya';
+      document.getElementById('streamVideoUrl').placeholder = isLive
+        ? 'https://vdo.ninja/?view=namamu'
+        : 'https://example.com/film.mp4';
+    });
+  });
+
+  // Load video
+  document.getElementById('streamLoadBtn').addEventListener('click', () => {
+    const url   = document.getElementById('streamVideoUrl').value.trim();
+    const title = document.getElementById('streamVideoTitle').value.trim();
+    const type  = document.querySelector('input[name="videoType"]:checked')?.value || 'file';
+    if (!url) { showToast('URL video tidak boleh kosong'); return; }
+    set(ref(db, 'stream/video/url'),   url);
+    set(ref(db, 'stream/video/type'),  type);
+    set(ref(db, 'stream/video/state'), 'pause');
+    if (title) set(ref(db, 'stream/video/title'), title);
+    showToast(type === 'live'
+      ? 'Live embed dimuat! Tekan Play buat tampilkan ke penonton.'
+      : 'Video dimuat! Tekan Play untuk mulai.');
+  });
+
+  // Play/Pause/Sync/Stop — overview page
+  document.getElementById('ovPlayBtn').addEventListener('click',  doPlay);
+  document.getElementById('ovPauseBtn').addEventListener('click', doPause);
+  document.getElementById('ovStopBtn').addEventListener('click',  doStop);
+
+  // Stream page
+  document.getElementById('pbPlay').addEventListener('click',  doPlay);
+  document.getElementById('pbPause').addEventListener('click', doPause);
+  document.getElementById('pbSync').addEventListener('click',  doSync);
+  document.getElementById('pbStop').addEventListener('click',  doStop);
+
+  // Seek
+  document.getElementById('seekBtn').addEventListener('click', () => {
+    if (currentVideoType === 'live') return; // seek gak relevan buat live embed
+    const t = parseFloat(document.getElementById('seekInput').value);
+    if (isNaN(t) || t < 0) { showToast('Masukkan angka detik yang valid'); return; }
+    const vid = document.getElementById('hostPreviewVideo');
+    if (vid && vid.src) vid.currentTime = t;
+    set(ref(db, 'stream/video/seekTo'), t);
+    set(ref(db, 'stream/video/state'), 'play');
+    showToast(`Lompat ke ${formatTime(t)} — semua penonton disinkronkan`);
+  });
+}
+
+function doPlay() {
+  if (currentVideoType === 'live') {
+    set(ref(db, 'stream/video/state'), 'play');
+    showToast('Live embed ditampilkan ke penonton');
+    return;
+  }
+  const vid = document.getElementById('hostPreviewVideo');
+  const t = vid?.currentTime || 0;
+  set(ref(db, 'stream/video/state'),  'play');
+  set(ref(db, 'stream/video/seekTo'), t);
+  if (vid && vid.src) vid.play().catch(() => {});
+  showToast('Stream diputar');
+}
+
+function doPause() {
+  if (currentVideoType === 'live') {
+    set(ref(db, 'stream/video/state'), 'pause');
+    showToast('Live embed disembunyikan dari penonton');
+    return;
+  }
+  const vid = document.getElementById('hostPreviewVideo');
+  if (vid) vid.pause();
+  set(ref(db, 'stream/video/state'), 'pause');
+  showToast('Stream dijeda');
+}
+
+function doSync() {
+  if (currentVideoType === 'live') {
+    showToast('Sync gak relevan buat live embed — itu siaran langsung, bukan file');
+    return;
+  }
+  const vid = document.getElementById('hostPreviewVideo');
+  const t = vid?.currentTime || 0;
+  set(ref(db, 'stream/video/seekTo'), t);
+  showToast(`Semua penonton disinkronkan ke ${formatTime(t)}`);
+}
+
+function doStop() {
+  if (!confirm('Hentikan stream? Semua penonton akan dikeluarkan.')) return;
+  endAcaraSession();
+  set(ref(db, 'stream/video'), { url: null, state: 'stop', title: '', type: 'file' });
+  const vid = document.getElementById('hostPreviewVideo');
+  const iframe = document.getElementById('hostPreviewIframe');
+  if (vid) { vid.pause(); vid.src = ''; vid.style.display = 'none'; }
+  if (iframe) { iframe.src = ''; iframe.style.display = 'none'; }
+  document.getElementById('hostPreviewPlaceholder').style.display = 'flex';
+  showToast('Stream & sesi acara dihentikan. Semua kode akses tidak aktif.');
+}
+
+// ── BANK INFO + QRIS ──────────────────────────────────
+let currentQrisBase64 = null; // module-level — dipakai listenBankInfo() & qrisFileInput handler
+
+function listenBankInfo() {
+  onValue(ref(db, 'stream/payment'), s => {
+    const data = s.val() || {};
+    const text = data.bankInfo || '';
+    const qris = data.qrisImage || null;
+
+    // Isi textarea (hanya jika tidak sedang focus)
+    const ta = document.getElementById('bankInfoTextarea');
+    if (ta && document.activeElement !== ta) ta.value = text;
+
+    // Isi QRIS preview
+    currentQrisBase64 = qris;
+    renderQrisPreview(qris);
+
+    // Update preview kolom kanan
+    updateBankPreview(text, qris);
+  });
+}
+
+function renderQrisPreview(qrisData) {
+  const img = document.getElementById('qrisPreviewImg');
+  const placeholder = document.getElementById('qrisUploadPlaceholder');
+  const removeBtn = document.getElementById('qrisRemoveBtn');
+  if (qrisData) {
+    img.src = qrisData;
+    img.style.display = 'block';
+    placeholder.style.display = 'none';
+    removeBtn.style.display = 'inline-flex';
+  } else {
+    img.style.display = 'none';
+    placeholder.style.display = 'flex';
+    removeBtn.style.display = 'none';
+  }
+}
+
+function updateBankPreview(text, qrisData) {
+  const preview = document.getElementById('bankPreview');
+  if (!preview) return;
+  let html = '';
+  if (qrisData) {
+    html += `<div style="text-align:center;margin-bottom:12px">
+      <div style="font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;font-weight:600">QRIS</div>
+      <img src="${qrisData}" alt="QRIS" style="display:block;margin:0 auto;width:180px;height:180px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:#fff;padding:8px">
+    </div>`;
+  }
+  if (text) {
+    if (qrisData) html += `<div style="height:1px;background:var(--border);margin:12px 0"></div>`;
+    html += `<div style="font-size:13px;line-height:1.8">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>`;
+  }
+  preview.innerHTML = html || '<span style="color:var(--text-2);font-size:13px">Belum ada info pembayaran.</span>';
+}
+
+// QRIS upload
+document.getElementById('qrisUploadBtn')?.addEventListener('click', () => {
+  document.getElementById('qrisFileInput').click();
+});
+
+document.getElementById('qrisFileInput')?.addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { showToast('Ukuran gambar maksimal 2MB'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => {
+    currentQrisBase64 = ev.target.result;
+    renderQrisPreview(currentQrisBase64);
+    updateBankPreview(document.getElementById('bankInfoTextarea').value.trim(), currentQrisBase64);
+  };
+  reader.readAsDataURL(file);
+  this.value = '';
+});
+
+// QRIS & bank listeners dipindah ke dalam listenBankInfo()
+
+document.getElementById('qrisRemoveBtn')?.addEventListener('click', () => {
+  currentQrisBase64 = null;
+  renderQrisPreview(null);
+  updateBankPreview(document.getElementById('bankInfoTextarea').value.trim(), null);
+});
+
+document.getElementById('saveBankBtn')?.addEventListener('click', async () => {
+  const btn  = document.getElementById('saveBankBtn');
+  const text = document.getElementById('bankInfoTextarea').value.trim();
+
+  btn.disabled = true;
+  const original = btn.innerHTML;
+  btn.textContent = 'Menyimpan...';
+
+  try {
+    await set(ref(db, 'stream/payment'), {
+      bankInfo:  text,
+      qrisImage: currentQrisBase64 || null,
+    });
+    showToast('✓ Info rekening & QRIS tersimpan, langsung tampil ke penonton!');
+  } catch (err) {
+    console.error('Gagal simpan bank info:', err);
+    showToast('Gagal menyimpan. Cek koneksi.');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = original;
+});
+
+// ── DONASI MANUAL ──────────────────────────────────────
+// Host yang konfirmasi setelah ngecek saldo masuk beneran — bukan self-report
+// dari penonton. Ke-push ke Firebase 'donations' → otomatis muncul di ticker
+// watch.html yang geser terus-menerus di atas kolom komentar.
+function initDonationManual() {
+  const nameField   = document.getElementById('donateNameField');
+  const amountField = document.getElementById('donateAmountField');
+  const confirmBtn  = document.getElementById('donateConfirmBtn');
+  if (!confirmBtn) return;
+
+  async function submitDonation() {
+    const name   = nameField.value.trim();
+    const amount = parseInt(amountField.value, 10);
+
+    if (!name)                   { showToast('Isi nama donatur dulu'); nameField.focus(); return; }
+    if (!amount || amount <= 0)  { showToast('Isi nominal yang valid'); amountField.focus(); return; }
+
+    confirmBtn.disabled = true;
+    try {
+      await push(ref(db, 'donations'), { name, amount, ts: Date.now() });
+      showToast(`✓ ${name} — ${formatRp(amount)} tercatat`);
+      nameField.value   = '';
+      amountField.value = '';
+      nameField.focus();
+    } catch (err) {
+      console.error('Gagal catat donasi:', err);
+      showToast('Gagal mencatat. Cek koneksi.');
+    }
+    confirmBtn.disabled = false;
+  }
+
+  confirmBtn.addEventListener('click', submitDonation);
+  amountField?.addEventListener('keydown', e => { if (e.key === 'Enter') submitDonation(); });
+
+  listenDonationHistory();
+}
+
+function listenDonationHistory() {
+  onValue(ref(db, 'donations'), snap => {
+    const data = snap.val() || {};
+    const entries = Object.entries(data).sort((a, b) => (b[1].ts || 0) - (a[1].ts || 0));
+    const container = document.getElementById('donationHistoryList');
+    if (!container) return;
+
+    if (entries.length === 0) {
+      container.innerHTML = '<span style="color:var(--text-2);font-size:13px">Belum ada donasi tercatat.</span>';
+      return;
+    }
+
+    container.innerHTML = entries.map(([key, d]) => `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:8px 10px">
+        <div style="font-size:13px">
+          <b>${escHTML(d.name)}</b> — <span style="color:var(--gold)">${formatRp(d.amount)}</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red);border-color:rgba(239,68,68,.2)" onclick="window.hostDeleteDonation('${key}')">Hapus</button>
+      </div>
+    `).join('');
+  });
+}
+
+window.hostDeleteDonation = async (key) => {
+  if (!confirm('Hapus donasi ini dari ticker penonton?')) return;
+  await set(ref(db, `donations/${key}`), null);
+};
+
+// ── USER MANAGEMENT ───────────────────────────────────
+var currentFilter  = 'pending';
+var pendingData    = {};
+var usersData      = {};
+
+function initUserFilters() {
+  document.querySelectorAll('.u-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.u-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFilter = tab.dataset.filter;
+      renderUserList(currentFilter);
+    });
+  });
+
+  // Listen realtime
+  onValue(ref(db, 'pending'), s => {
+    pendingData = s.val() || {};
+    updateTabCounts();
+    if (currentFilter === 'pending' || currentFilter === 'rejected') renderUserList(currentFilter);
+  });
+
+  onValue(ref(db, 'users'), s => {
+    usersData = s.val() || {};
+    updateTabCounts();
+    if (currentFilter === 'approved') renderUserList(currentFilter);
+  });
+}
+
+function updateTabCounts() {
+  const allPending  = Object.values(pendingData || {});
+  const pendingCount  = allPending.filter(u => u && u.status === 'pending').length;
+  const rejectedCount = allPending.filter(u => u && u.status === 'rejected').length;
+  const approvedCount = Object.values(usersData || {}).filter(u => u && u.status === 'approved').length;
+
+  const tp = document.getElementById('tabCountPending');
+  const ta = document.getElementById('tabCountApproved');
+  const tr = document.getElementById('tabCountRejected');
+  if (tp) tp.textContent = pendingCount;
+  if (ta) ta.textContent = approvedCount;
+  if (tr) tr.textContent = rejectedCount;
+}
+
+function renderUserList(filter) {
+  const container = document.getElementById('userListContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  let list = [];
+
+  if (filter === 'approved') {
+    list = Object.values(usersData || {}).filter(u => u && u.status === 'approved');
+  } else {
+    list = Object.values(pendingData || {}).filter(u => u && u.status === filter);
+  }
+
+  list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  if (list.length === 0) {
+    container.innerHTML = `<div class="empty-state">Tidak ada user dengan status ini.</div>`;
+    return;
+  }
+
+  list.forEach(u => {
+    const card = document.createElement('div');
+    card.className = 'user-card';
+
+    const isApproved = filter === 'approved';
+    const isPending  = filter === 'pending';
+
+    card.innerHTML = `
+      <div class="user-card-top">
+        <div class="user-avatar">${escHTML((u.name || '?')[0].toUpperCase())}</div>
+        <div class="user-meta">
+          <div class="user-name">${escHTML(u.name || '—')}</div>
+          <div class="user-sub">${timeAgo(u.createdAt || u.approvedAt)}</div>
+          ${isApproved && u.accessUID
+            ? `<div class="user-uid" title="Kode Akses">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                ${escHTML(u.accessUID)}
+               </div>`
+            : ''}
+        </div>
+        <div class="user-badge-wrap">
+          ${filter === 'pending'  ? '<span class="status-pill pill-pause">Menunggu</span>' : ''}
+          ${filter === 'approved' ? '<span class="status-pill pill-live">Disetujui</span>' : ''}
+          ${filter === 'rejected' ? '<span class="status-pill pill-idle">Ditolak</span>'   : ''}
+        </div>
+      </div>
+      <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-top:8px;font-size:12px;color:var(--text-2)">
+        📱 Bukti transfer dikirim via WhatsApp · Cek WA kamu untuk konfirmasi
+      </div>
+      ${isPending ? `
+        <div class="user-card-actions">
+          <button class="btn btn-sm" style="background:var(--green-soft);color:var(--green);border-color:rgba(34,197,94,.3);flex:1"
+            onclick="hostApprove('${u.pendingKey}')">
+            ✓ Setujui & Generate Kode Akses
+          </button>
+          <button class="btn btn-sm btn-danger" style="flex:0" onclick="hostReject('${u.pendingKey}')">
+            ✕ Tolak
+          </button>
+        </div>` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+// window.hostApprove dan window.hostReject dipasang di dalam initDashboard
+
+// ── HELPERS ───────────────────────────────────────────
+function timeAgo(ts) {
+  if (!ts) return '';
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff / 60000);
+  if (m < 1)  return 'Baru saja';
+  if (m < 60) return `${m} menit lalu`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h} jam lalu`;
+  return `${Math.floor(h / 24)} hari lalu`;
+}
+
+function formatTime(s) {
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = Math.floor(s % 60);
+  return [h, m, ss].map(v => String(v).padStart(2,'0')).join(':');
+}
+
+// ── ACARA SESSION ─────────────────────────────────────
+var acaraTimerInterval = null;
+
+function initAcaraControls() {
+  document.getElementById('acaraStartBtn').addEventListener('click', startAcaraSession);
+  document.getElementById('acaraEndBtn').addEventListener('click', () => {
+    if (!confirm('Akhiri sesi acara? Semua penonton akan dikeluarkan.')) return;
+    endAcaraSession();
+  });
+
+  // Listen status acara realtime
+  onValue(ref(db, 'stream/acara'), snap => {
+    const acara = snap.val();
+    updateAcaraUI(acara);
+  });
+}
+
+function startAcaraSession() {
+  const menit = parseInt(document.getElementById('acaraDurasi').value) || 140;
+  const startedAt  = Date.now();
+  const expiresAt  = startedAt + menit * 60 * 1000;
+  // Reset presence/viewers lama saat acara baru dimulai
+  set(ref(db, 'stream/presence'), null);
+  set(ref(db, 'stream/viewers'), 0);
+  set(ref(db, 'stream/acara'), {
+    active: true,
+    startedAt,
+    expiresAt,
+    durasiMenit: menit,
+  });
+  showToast(`Sesi acara dimulai! Berlaku ${menit} menit.`);
+}
+
+async function endAcaraSession() {
+  if (acaraTimerInterval) { clearInterval(acaraTimerInterval); acaraTimerInterval = null; }
+
+  try {
+    // ── Hapus semua tiket (users + uids + pending) dari Firebase ──
+    const [usersSnap, uidsSnap, pendingSnap] = await Promise.all([
+      get(ref(db, 'users')),
+      get(ref(db, 'uids')),
+      get(ref(db, 'pending')),
+    ]);
+
+    const writes = [];
+
+    // Hapus semua user
+    if (usersSnap.exists()) {
+      Object.keys(usersSnap.val()).forEach(k => {
+        writes.push(set(ref(db, `users/${k}`), null));
+      });
+    }
+
+    // Hapus semua index UID
+    if (uidsSnap.exists()) {
+      Object.keys(uidsSnap.val()).forEach(k => {
+        writes.push(set(ref(db, `uids/${k}`), null));
+      });
+    }
+
+    // Hapus semua pending
+    if (pendingSnap.exists()) {
+      Object.keys(pendingSnap.val()).forEach(k => {
+        writes.push(set(ref(db, `pending/${k}`), null));
+      });
+    }
+
+    await Promise.all(writes);
+
+    // Tandai acara selesai
+    await set(ref(db, 'stream/acara'), {
+      active: false,
+      startedAt: null,
+      expiresAt: null,
+      durasiMenit: null,
+      lastEndedAt: Date.now(),
+    });
+
+    showToast('Acara selesai. Semua tiket dihapus dari database.');
+  } catch (err) {
+    console.error('Gagal hapus tiket:', err);
+    showToast('Gagal menghapus tiket. Cek koneksi.');
+  }
+}
+
+function updateAcaraUI(acara) {
+  const badge = document.getElementById('acaraStatusBadge');
+  const timerEl = document.getElementById('acaraTimer');
+  if (!badge || !timerEl) return;
+
+  if (acaraTimerInterval) { clearInterval(acaraTimerInterval); acaraTimerInterval = null; }
+
+  if (!acara || !acara.active || !acara.expiresAt) {
+    badge.innerHTML = '<span class="status-pill pill-idle">Belum Dimulai</span>';
+    timerEl.textContent = '—';
+    timerEl.style.color = 'var(--text-2)';
+    return;
+  }
+
+  badge.innerHTML = '<span class="status-pill pill-live">● Aktif</span>';
+
+  function tick() {
+    const sisa = acara.expiresAt - Date.now();
+    if (sisa <= 0) {
+      timerEl.textContent = 'HABIS';
+      timerEl.style.color = 'var(--red)';
+      clearInterval(acaraTimerInterval);
+      // Auto end
+      endAcaraSession();
+      set(ref(db, 'stream/video'), { url: null, state: 'stop', title: '', type: 'file' });
+      return;
+    }
+    const h  = Math.floor(sisa / 3600000);
+    const m  = Math.floor((sisa % 3600000) / 60000);
+    const s  = Math.floor((sisa % 60000) / 1000);
+    timerEl.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    timerEl.style.color = sisa < 10 * 60 * 1000 ? 'var(--red)' : 'var(--green)';
+  }
+  tick();
+  acaraTimerInterval = setInterval(tick, 1000);
+}
+
+// ── SECURITY PAGE ─────────────────────────────────────
+document.getElementById('secSaveBtn')?.addEventListener('click', async () => {
+  const oldPw  = document.getElementById('secOldPw').value;
+  const newPw  = document.getElementById('secNewPw').value;
+  const confPw = document.getElementById('secConfirmPw').value;
+  const errEl  = document.getElementById('secErr');
+  const btn    = document.getElementById('secSaveBtn');
+
+  errEl.textContent = '';
+
+  if (!oldPw) { errEl.textContent = 'Masukkan password lama.'; return; }
+  if (!newPw) { errEl.textContent = 'Masukkan password baru.'; return; }
+  if (newPw.length < 8) { errEl.textContent = 'Password baru minimal 8 karakter.'; return; }
+  if (newPw !== confPw) { errEl.textContent = 'Konfirmasi password tidak cocok.'; return; }
+
+  btn.disabled = true; btn.textContent = 'Memeriksa...';
+
+  try {
+    // Verifikasi password lama dulu
+    const oldHash = await sha256(oldPw);
+    const snap = await get(ref(db, 'host/passwordHash'));
+    if (!snap.exists() || snap.val() !== oldHash) {
+      errEl.textContent = 'Password lama tidak benar.';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Simpan Password Baru';
+      return;
+    }
+
+    // Simpan hash password baru
+    const newHash = await sha256(newPw);
+    await set(ref(db, 'host/passwordHash'), newHash);
+
+    document.getElementById('secOldPw').value  = '';
+    document.getElementById('secNewPw').value  = '';
+    document.getElementById('secConfirmPw').value = '';
+
+    showToast('✓ Password berhasil diubah!');
+  } catch (err) {
+    console.error(err);
+    errEl.textContent = 'Gagal menyimpan. Cek koneksi.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Simpan Password Baru';
+});
+</script>
+</body>
+</html>
