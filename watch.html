@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NobarXD — Nonton Bareng</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/watch.css">
+</head>
+<body>
+
+<div class="watch-root">
+
+  <!-- ════ TOPBAR ════ -->
+  <header class="w-topbar">
+    <div class="w-topbar-left">
+      <div class="w-logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-h)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="2.18"/>
+          <line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+        </svg>
+        <span>NobarXD</span>
+      </div>
+      <div class="w-film-title" id="topbarTitle">Menunggu host...</div>
+    </div>
+    <div class="w-topbar-right">
+      <div class="w-live-badge"><span class="w-live-dot"></span>LIVE</div>
+      <div class="w-pill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span id="viewerCount">0</span>
+      </div>
+      <div class="w-pill w-pill-timer" id="countdownPill">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="acaraCountdown">--:--:--</span>
+      </div>
+      <button class="w-icon-btn" id="shareBtn" title="Bagikan">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="w-icon-btn" id="logoutBtn" title="Keluar">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <div class="w-body">
+
+    <!-- ── VIDEO COLUMN ── -->
+    <div class="w-video-col">
+
+      <!-- Video player -->
+      <div class="w-video-wrap" id="videoWrap">
+        <video id="videoPlayer" controls playsinline></video>
+        <iframe id="videoIframe" allow="autoplay; fullscreen" allowfullscreen referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-presentation" style="display:none;width:100%;height:100%;border:0;position:absolute;top:0;left:0;background:#000"></iframe>
+
+        <!-- Placeholder saat belum ada video -->
+        <div class="w-placeholder" id="videoPlaceholder">
+          <div class="w-ph-glow"></div>
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,.2)"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          <p class="w-ph-title">Menunggu host memulai film...</p>
+          <p class="w-ph-sub">Santai dulu 🍿 filmnya segera mulai</p>
+        </div>
+
+        <!-- Like button overlay di kanan atas video -->
+        <div class="w-like-wrap">
+          <button class="w-like-btn" id="likeBtn">
+            <svg class="w-like-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span class="w-like-count" id="likeCount">0</span>
+          </button>
+        </div>
+
+        <!-- Floating hearts -->
+        <div class="w-hearts-wrap" id="heartsWrap"></div>
+      </div>
+
+    </div>
+
+    <!-- ── CHAT COLUMN ── -->
+    <div class="w-chat-col" id="chatCol">
+
+      <!-- Ticker donasi — bergeser terus-menerus, tampil di kedua tab -->
+      <div class="w-ticker hidden" id="donateTicker">
+        <div class="w-ticker-track" id="donateTickerTrack"></div>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="w-tabs">
+        <button class="w-tab active" data-tab="chat">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Komentar
+        </button>
+        <button class="w-tab" data-tab="donate">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Donate
+        </button>
+      </div>
+
+      <!-- ── PANEL: KOMENTAR ── -->
+      <div class="w-panel" id="chatPanel">
+
+        <!-- Pesan-pesan -->
+        <div class="w-messages" id="chatMessages"></div>
+
+        <!-- Input di bawah -->
+        <div class="w-chat-input">
+          <button class="w-name-tag" id="chatNameTag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span id="chatNameLabel">Anon</span>
+          </button>
+          <textarea class="w-chat-textarea" id="chatInput" placeholder="Komentar..." rows="1"></textarea>
+          <button class="w-send-btn" id="chatSendBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ── PANEL: DONATE ── -->
+      <div class="w-panel hidden" id="donatePanel">
+        <div class="w-donate-inner">
+
+          <div class="w-donate-ticket">
+
+            <div class="w-donate-kicker">🍿 Donasi seikhlasnya</div>
+            <p class="w-donate-desc">Gak ada nominal wajib — sekecil apapun, bikin admin makin semangat lanjutin nobar.</p>
+
+            <div class="w-qris-frame" id="bankInfoDisplay">Memuat info QRIS...</div>
+
+            <!-- Sobekan tiket -->
+            <div class="w-ticket-tear"></div>
+
+            <div class="w-donate-step">
+              <span class="w-step-num">1</span>
+              <span>Scan QRIS di atas pakai e-wallet / m-banking kamu</span>
+            </div>
+            <div class="w-donate-step">
+              <span class="w-step-num">2</span>
+              <span>Isi nominal seikhlasnya</span>
+            </div>
+            <div class="w-donate-step">
+              <span class="w-step-num">3</span>
+              <span>Tulis catatan di bawah ini, tempel di kolom Keterangan transfer</span>
+            </div>
+
+            <div class="w-donate-name-row">
+              <input class="w-field-input" type="text" id="donateNameInput" placeholder="Nama kamu" maxlength="30">
+              <button class="w-copy-btn" id="donateCopyNoteBtn" type="button" title="Salin catatan">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+            <div class="w-donate-note-preview" id="donateNotePreviewText">Donasi dari -</div>
+
+            <div class="w-donate-step">
+              <span class="w-step-num">4</span>
+              <span>Host konfirmasi manual setelah cek saldo masuk — namamu muncul di ticker atas ✨</span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Floating hearts container -->
+<div class="w-hearts-wrap-fixed" id="heartsFixed"></div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="nameModal">
+  <div class="modal">
+    <div class="modal-header"><h2>Ganti Nama</h2></div>
+    <p class="modal-sub">Nama ini yang tampil di komentar.</p>
+    <input class="input" type="text" id="newNameInput" placeholder="Nama kamu..." maxlength="24">
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('nameModal')">Batal</button>
+      <button class="btn btn-primary" id="confirmNameBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <div class="modal-header"><h2>Bagikan ke Teman</h2></div>
+    <p class="modal-sub">Ajak teman-teman nobar bareng!</p>
+    <label class="label">Link Nobar</label>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input class="input" type="text" id="shareUrlInput" readonly style="font-size:12px;font-family:'JetBrains Mono',monospace;flex:1">
+      <button class="btn btn-ghost btn-sm" id="copyLinkBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+    </div>
+    <button class="btn w-full" id="shareWABtn" style="background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.3);color:#25d366;margin-bottom:16px">
+      Bagikan via WhatsApp
+    </button>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('shareModal')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<script type="module">
+import { getSession, clearSession } from './js/auth.js';
+import { initPlayer, trackViewer, watchAcaraSession } from './js/player.js';
+import { initChat, updateUserName, resetUnread } from './js/chat.js';
+import { initDonate } from './js/donate.js';
+import { initModalBackdrops, openModal, closeModal, showToast, copyText } from './js/ui.js';
+import { db } from './js/firebase.js';
+import { ref, push, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ── AUTH GUARD ────────────────────────────────────────
+const session = getSession();
+if (!session) { window.location.href = 'index.html'; throw new Error('Not logged in'); }
+
+window.closeModal = closeModal;
+
+// ── INIT ─────────────────────────────────────────────
+initModalBackdrops();
+initPlayer();
+initChat(session.name || 'Anon');
+initDonate();
+trackViewer();
+
+// ── TABS ──────────────────────────────────────────────
+document.querySelectorAll('.w-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.w-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const target = tab.dataset.tab;
+    document.getElementById('chatPanel').classList.toggle('hidden', target !== 'chat');
+    document.getElementById('donatePanel').classList.toggle('hidden', target !== 'donate');
+  });
+});
+
+// ── ACARA SESSION WATCHER ─────────────────────────────
+watchAcaraSession((pesan) => {
+  const vid = document.querySelector('video');
+  if (vid) vid.pause();
+  set(ref(db, 'chat/messages'), null);
+  set(ref(db, 'stream/likes'), 0);
+  set(ref(db, 'stream/presence'), null);
+  set(ref(db, 'donations'), null);
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center';
+  overlay.innerHTML = `
+    <div style="font-size:52px">🎬</div>
+    <div style="font-family:Outfit,sans-serif;font-size:22px;font-weight:800;color:#fff">Acara Telah Berakhir</div>
+    <div style="font-size:13px;color:#a8a8c8;max-width:280px;line-height:1.7">${pesan}</div>
+    <div style="font-size:12px;color:#6060aa">Terima kasih sudah nobar bersama! 🙏</div>
+    <div style="background:rgba(109,40,217,.12);border:1px solid rgba(109,40,217,.25);border-radius:10px;padding:10px 16px;font-size:12px;color:#a8a8c8;max-width:280px;line-height:1.6">
+      🎟️ Tiket kamu sudah tidak berlaku.<br>Beli tiket baru untuk acara berikutnya.
+    </div>
+    <button onclick="localStorage.removeItem('nobar_session');location.href='index.html'"
+      style="padding:12px 28px;background:#6d28d9;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px">
+      🎟️ Beli Tiket Baru
+    </button>
+  `;
+  document.body.appendChild(overlay);
+});
+
+// ── LIKE BUTTON ───────────────────────────────────────
+let likeAnimating = false;
+const likeBtn = document.getElementById('likeBtn');
+const likeCountEl = document.getElementById('likeCount');
+
+onValue(ref(db, 'stream/likes'), snap => {
+  if (likeCountEl) likeCountEl.textContent = snap.val() || 0;
+});
+
+likeBtn?.addEventListener('click', () => {
+  if (likeAnimating) return;
+  likeAnimating = true;
+  const icon = likeBtn.querySelector('.w-like-icon');
+  icon.style.fill = '#ef4444';
+  icon.style.stroke = '#ef4444';
+  icon.style.transform = 'scale(1.3)';
+  setTimeout(() => { icon.style.transform = 'scale(1)'; likeAnimating = false; }, 280);
+  spawnHeart();
+  get(ref(db, 'stream/likes')).then(s => set(ref(db, 'stream/likes'), (s.val() || 0) + 1));
+});
+
+function spawnHeart() {
+  const wrap = document.getElementById('heartsFixed');
+  if (!wrap) return;
+  const el = document.createElement('div');
+  el.className = 'w-heart-float';
+  el.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  el.style.right = (16 + Math.random() * 40) + 'px';
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 2000);
+}
+
+// ── NAME TAG ──────────────────────────────────────────
+document.getElementById('chatNameTag')?.addEventListener('click', () => {
+  openModal('nameModal');
+  setTimeout(() => document.getElementById('newNameInput')?.focus(), 100);
+});
+document.getElementById('confirmNameBtn')?.addEventListener('click', () => {
+  const name = document.getElementById('newNameInput')?.value.trim();
+  if (!name) return;
+  localStorage.setItem('nobar_chat_name', name);
+  updateUserName(name);
+  document.getElementById('chatNameLabel').textContent = name;
+  closeModal('nameModal');
+  showToast('Nama diubah ke: ' + name);
+});
+
+// ── SHARE ─────────────────────────────────────────────
+document.getElementById('shareBtn')?.addEventListener('click', () => {
+  document.getElementById('shareUrlInput').value = location.href;
+  openModal('shareModal');
+});
+document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+  copyText(location.href);
+  showToast('Link tersalin!');
+});
+document.getElementById('shareWABtn')?.addEventListener('click', () => {
+  window.open(`https://wa.me/?text=Yuk+nobar+bareng!+🎬+${encodeURIComponent(location.href)}`, '_blank');
+});
+
+// ── LOGOUT ────────────────────────────────────────────
+document.getElementById('logoutBtn')?.addEventListener('click', () => {
+  clearSession();
+  window.location.href = 'index.html';
+});
+
+// Update nama di tag saat init
+const storedName = localStorage.getItem('nobar_chat_name') || session.name;
+if (storedName) document.getElementById('chatNameLabel').textContent = storedName;
+</script>
+</body>
+</html>
