@@ -134,7 +134,7 @@ async function handleRegister(e) {
   }
 }
 
-// ── LOGIN DENGAN UID ──────────────────────────────────
+// ── LOGIN DENGAN UID atau KODE AKSES GLOBAL ───────────
 async function handleLogin(e) {
   e.preventDefault();
   const uidInput  = document.getElementById('loginUID').value.trim().toLowerCase();
@@ -143,15 +143,30 @@ async function handleLogin(e) {
   clearErrors();
 
   if (!uidInput) { showError('loginUIDErr', 'Masukkan kode akses kamu'); return; }
-  if (!uidInput.startsWith('nobarpildun')) {
-    showError('loginUIDErr', 'Format kode akses tidak valid');
-    return;
-  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = 'Memeriksa...';
 
   try {
+    // ── Cek kode akses global dulu ──
+    const globalSnap = await get(ref(db, 'globalAccessCode'));
+    const globalData = globalSnap.val();
+
+    if (globalData && globalData.active && globalData.code &&
+        globalData.code.toLowerCase() === uidInput) {
+      // Cocok dengan kode global → simpan sesi sebagai guest global
+      saveSession({ accessUID: '__global__', globalCode: globalData.code, name: 'Penonton', isGlobal: true });
+      window.location.href = 'watch.html';
+      return;
+    }
+
+    // ── Tidak cocok global → cek UID per-user ──
+    if (!uidInput.startsWith('nobarpildun')) {
+      showError('loginUIDErr', 'Kode akses tidak valid atau salah. Pastikan kamu memasukkan kode yang benar.');
+      submitBtn.disabled = false; submitBtn.textContent = 'Masuk & Nonton';
+      return;
+    }
+
     // Cek di index UID
     const uidSnap = await get(ref(db, `uids/${uidInput}`));
     if (!uidSnap.exists()) {
@@ -176,7 +191,7 @@ async function handleLogin(e) {
       return;
     }
 
-    // Login berhasil
+    // Login berhasil (per-user UID)
     saveSession({ accessUID: uidInput, userKey: userRef, name: user.name });
     window.location.href = 'watch.html';
 
@@ -191,6 +206,30 @@ async function handleLogin(e) {
 async function checkAccessAndRedirect(accessUID) {
   if (!accessUID) { clearSession(); location.reload(); return; }
 
+  // ── Handle sesi global ──
+  const sesi = getSession();
+  if (sesi?.isGlobal && accessUID === '__global__') {
+    // Verifikasi kode global masih aktif & sama
+    const globalSnap = await get(ref(db, 'globalAccessCode'));
+    const globalData = globalSnap.val();
+    if (!globalData || !globalData.active || !globalData.code ||
+        globalData.code.toLowerCase() !== (sesi.globalCode || '').toLowerCase()) {
+      clearSession();
+      showError('loginUIDErr', 'Kode akses global sudah tidak aktif atau telah diubah. Minta kode terbaru ke host.');
+      return;
+    }
+    // Cek acara aktif
+    const acaraSnap = await get(ref(db, 'stream/acara'));
+    const acara = acaraSnap.val();
+    if (!acara || !acara.active || !acara.expiresAt || Date.now() > acara.expiresAt) {
+      showError('loginUIDErr', 'Belum ada acara yang aktif saat ini. Tunggu host memulai acara.');
+      return;
+    }
+    window.location.href = 'watch.html';
+    return;
+  }
+
+  // ── Handle sesi per-user UID ──
   const uidSnap = await get(ref(db, `uids/${accessUID}`));
   if (!uidSnap.exists()) { clearSession(); location.reload(); return; }
 
