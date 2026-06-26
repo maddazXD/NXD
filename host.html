@@ -527,7 +527,8 @@
         </div>
 
         <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;color:var(--text-2);line-height:1.6">
-          🔑 Kode akses global berlaku untuk <b>semua penonton</b> — satu kode dipakai bersama. Host bisa buat kode baru kapan saja atau matikan kode agar tidak ada yang bisa masuk.
+          🔑 Kode akses global berlaku untuk <b>semua penonton</b> — satu kode dipakai bersama. Host bisa buat kode baru kapan saja.<br>
+          <span style="color:var(--red);margin-top:4px;display:inline-block">⚠️ <b>Matikan kode</b> akan otomatis <b>mengakhiri sesi acara/live</b> dan <b>mengeluarkan semua penonton</b>.</span>
         </div>
 
         <!-- Status kode aktif -->
@@ -837,6 +838,10 @@ function initDashboard() {
     if (titleEl) titleEl.textContent = pageTitles[name] || name;
     closeSidebar();
     if (name === 'users') renderUserList(currentFilter);
+    // Re-render kode akses saat halaman security dibuka (elemen baru tersedia di DOM)
+    if (name === 'security') {
+      get(ref(db, 'globalAccessCode')).then(snap => _updateGlobalCodeDisplay(snap.val()));
+    }
   }
 
   // Pasang event listener navigation
@@ -1543,71 +1548,89 @@ function updateAcaraUI(acara) {
 
 // ── GLOBAL ACCESS CODE ────────────────────────────────
 // Disimpan di Firebase: globalAccessCode/code (string | null), globalAccessCode/active (bool)
+// Bug fix: elemen DOM mungkin belum ada saat initGlobalCodeUI() pertama dipanggil karena
+// pageSecurity belum pernah aktif. Solusi: pasang onValue listener sekali di awal (tidak
+// butuh elemen), lalu update UI hanya jika elemen sudah ada di DOM.
+
+let _globalCodeUnsubscribe = null;
 
 function initGlobalCodeUI() {
-  const codeDisplay   = document.getElementById('globalCodeDisplay');
-  const codeState     = document.getElementById('globalCodeState');
-  const codeCopyBtn   = document.getElementById('globalCodeCopyBtn');
-  const codeGenBtn    = document.getElementById('globalCodeGenBtn');
-  const codeDisBtn    = document.getElementById('globalCodeDisableBtn');
-  const codeInput     = document.getElementById('globalCodeInput');
-  const codeErr       = document.getElementById('globalCodeErr');
+  // Pasang realtime listener Firebase sekali saja
+  if (_globalCodeUnsubscribe) return; // sudah terdaftar
 
-  if (!codeDisplay) return;
-
-  // Listener realtime status kode
-  onValue(ref(db, 'globalAccessCode'), snap => {
-    const data = snap.val();
-    if (!data || !data.active || !data.code) {
-      codeDisplay.textContent = '—';
-      codeDisplay.style.color = 'var(--text-2)';
-      codeState.innerHTML = '<span style="color:var(--red)">● Kode tidak aktif — penonton tidak bisa masuk dengan kode global</span>';
-      codeCopyBtn.style.display = 'none';
-    } else {
-      codeDisplay.textContent = data.code;
-      codeDisplay.style.color = 'var(--gold)';
-      codeState.innerHTML = '<span style="color:var(--green)">● Aktif</span>' +
-        (data.createdAt ? ` <span style="color:var(--text-2);font-size:11px">· dibuat ${new Date(data.createdAt).toLocaleString('id-ID')}</span>` : '');
-      codeCopyBtn.style.display = 'inline-flex';
-    }
+  _globalCodeUnsubscribe = onValue(ref(db, 'globalAccessCode'), snap => {
+    _updateGlobalCodeDisplay(snap.val());
   });
 
-  // Salin kode
-  codeCopyBtn?.addEventListener('click', () => {
-    const code = codeDisplay.textContent;
+  // Pasang event listeners tombol — dilakukan lazy saat elemen sudah ada
+  // Gunakan event delegation pada parent yang selalu ada di DOM
+  document.addEventListener('click', _handleGlobalCodeClick);
+}
+
+function _updateGlobalCodeDisplay(data) {
+  const codeDisplay = document.getElementById('globalCodeDisplay');
+  const codeState   = document.getElementById('globalCodeState');
+  const codeCopyBtn = document.getElementById('globalCodeCopyBtn');
+  if (!codeDisplay) return; // halaman security belum dibuka
+
+  if (!data || !data.active || !data.code) {
+    codeDisplay.textContent = '—';
+    codeDisplay.style.color = 'var(--text-2)';
+    codeState.innerHTML = '<span style="color:var(--red)">● Kode tidak aktif — penonton tidak bisa masuk dengan kode global</span>';
+    if (codeCopyBtn) codeCopyBtn.style.display = 'none';
+  } else {
+    codeDisplay.textContent = data.code;
+    codeDisplay.style.color = 'var(--gold)';
+    codeState.innerHTML = '<span style="color:var(--green)">● Aktif</span>' +
+      (data.createdAt ? ` <span style="color:var(--text-2);font-size:11px">· dibuat ${new Date(data.createdAt).toLocaleString('id-ID')}</span>` : '');
+    if (codeCopyBtn) codeCopyBtn.style.display = 'inline-flex';
+  }
+}
+
+async function _handleGlobalCodeClick(e) {
+  const target = e.target.closest('button');
+  if (!target) return;
+
+  // ── Salin kode ──
+  if (target.id === 'globalCodeCopyBtn') {
+    const codeDisplay = document.getElementById('globalCodeDisplay');
+    const code = codeDisplay?.textContent;
     if (code && code !== '—') {
       navigator.clipboard.writeText(code).then(() => {
         showToast('✓ Kode disalin!');
-        const orig = codeCopyBtn.innerHTML;
-        codeCopyBtn.textContent = '✓ Tersalin';
-        setTimeout(() => { codeCopyBtn.innerHTML = orig; }, 2000);
+        const orig = target.innerHTML;
+        target.textContent = '✓ Tersalin';
+        setTimeout(() => { target.innerHTML = orig; }, 2000);
       });
     }
-  });
+    return;
+  }
 
-  // Generate / aktifkan kode baru
-  codeGenBtn?.addEventListener('click', async () => {
-    codeErr.textContent = '';
-    const custom = codeInput.value.trim();
+  // ── Generate / aktifkan kode baru ──
+  if (target.id === 'globalCodeGenBtn') {
+    const codeInput = document.getElementById('globalCodeInput');
+    const codeErr   = document.getElementById('globalCodeErr');
+    if (codeErr) codeErr.textContent = '';
 
+    const custom = codeInput?.value.trim() || '';
     let code;
+
     if (custom) {
-      // Validasi format: hanya huruf, angka, -, _
       if (!/^[A-Za-z0-9_\-]+$/.test(custom)) {
-        codeErr.textContent = 'Hanya huruf, angka, tanda hubung (-), atau garis bawah (_) yang diperbolehkan.';
+        if (codeErr) codeErr.textContent = 'Hanya huruf, angka, tanda hubung (-), atau garis bawah (_) yang diperbolehkan.';
         return;
       }
       code = custom.toUpperCase();
     } else {
-      // Generate otomatis: 3 kata acak dari kata pendek + 4 digit
+      // Generate otomatis: kata acak + 4 digit
       const kata = ['NOBAR','NONTON','FILM','ACARA','EVENT','LIVE','SERU','ASIK','KEREN','PILDUN','MALAM'];
-      const w1 = kata[Math.floor(Math.random() * kata.length)];
+      const w1  = kata[Math.floor(Math.random() * kata.length)];
       const num = String(Math.floor(Math.random() * 9000) + 1000);
       code = w1 + num;
     }
 
-    codeGenBtn.disabled = true;
-    codeGenBtn.textContent = 'Menyimpan...';
+    target.disabled = true;
+    target.textContent = 'Menyimpan...';
 
     try {
       await set(ref(db, 'globalAccessCode'), {
@@ -1615,40 +1638,67 @@ function initGlobalCodeUI() {
         active: true,
         createdAt: Date.now(),
       });
-      codeInput.value = '';
+      if (codeInput) codeInput.value = '';
       showToast(`✓ Kode akses global diaktifkan: ${code}`);
     } catch (err) {
       console.error(err);
       showToast('Gagal menyimpan kode. Cek koneksi.');
     }
 
-    codeGenBtn.disabled = false;
-    codeGenBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg> Aktifkan Kode Baru';
-  });
+    target.disabled = false;
+    target.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg> Aktifkan Kode Baru';
+    return;
+  }
 
-  // Matikan kode
-  codeDisBtn?.addEventListener('click', async () => {
-    codeErr.textContent = '';
-    if (!confirm('Yakin matikan kode akses global? Penonton tidak bisa login dengan kode ini lagi.')) return;
+  // ── Matikan kode → otomatis akhiri sesi acara + kick semua user ──
+  if (target.id === 'globalCodeDisableBtn') {
+    const codeErr = document.getElementById('globalCodeErr');
+    if (codeErr) codeErr.textContent = '';
 
-    codeDisBtn.disabled = true;
-    codeDisBtn.textContent = 'Mematikan...';
+    if (!confirm('Yakin matikan kode akses global?\n\nSemua penonton akan DIKELUARKAN dan sesi acara/live akan BERAKHIR otomatis.')) return;
+
+    target.disabled = true;
+    target.textContent = 'Mematikan...';
 
     try {
+      // 1. Matikan kode akses
       await set(ref(db, 'globalAccessCode'), {
         code: null,
         active: false,
         disabledAt: Date.now(),
       });
-      showToast('Kode akses global dimatikan.');
+
+      // 2. Akhiri sesi acara → semua viewer di watch.html akan detect ini dan keluar
+      await set(ref(db, 'stream/acara'), {
+        active: false,
+        startedAt: null,
+        expiresAt: null,
+        durasiMenit: null,
+        lastEndedAt: Date.now(),
+        reason: 'access_code_disabled', // flag khusus supaya watch.html bisa tampil pesan yang tepat
+      });
+
+      // 3. Stop stream video
+      await set(ref(db, 'stream/video'), { url: null, state: 'stop', title: '', type: 'file' });
+
+      // 4. Bersihkan data sesi (chat, likes, presence, donasi)
+      await Promise.all([
+        set(ref(db, 'chat/messages'), null),
+        set(ref(db, 'stream/likes'), 0),
+        set(ref(db, 'stream/presence'), null),
+        set(ref(db, 'stream/viewers'), 0),
+      ]);
+
+      showToast('⛔ Kode dimatikan. Semua penonton telah dikeluarkan dan sesi acara berakhir.');
     } catch (err) {
       console.error(err);
       showToast('Gagal mematikan kode. Cek koneksi.');
     }
 
-    codeDisBtn.disabled = false;
-    codeDisBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Matikan Kode';
-  });
+    target.disabled = false;
+    target.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Matikan Kode';
+    return;
+  }
 }
 
 // ── SECURITY PAGE ─────────────────────────────────────
