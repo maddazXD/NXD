@@ -64,8 +64,8 @@
           Masuk
         </button>
         <button class="gate-tab" id="tabRegister">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Daftar & Bayar
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Ambil Kode Akses
         </button>
       </div>
 
@@ -105,7 +105,7 @@
         <div class="gate-divider"><span>belum punya kode?</span></div>
 
         <button class="btn-switch-tab w-full" onclick="document.getElementById('tabRegister').click()">
-          Daftar &amp; Bayar sekarang
+          Ambil Kode Akses via WA
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
 
@@ -115,18 +115,17 @@
         </div>
       </div>
 
-      <!-- ════ REGISTER ════ -->
+      <!-- ════ AMBIL KODE ════ -->
       <div class="gate-body hidden" id="registerSection">
 
-        <div class="gate-section-title">Daftar Nobar 🎬</div>
+        <div class="gate-section-title">Ambil Kode Akses 🎬</div>
 
-        <!-- Harga badge -->
-        <div class="price-badge">
-          <div class="price-badge-left">
-            <div class="price-amount">Rp 1.000</div>
-            <div class="price-label">Akses Nobar · Bayar Sekali</div>
+        <!-- Info box -->
+        <div class="info-box">
+          <div class="info-box-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           </div>
-          <div class="price-badge-icon">🎟️</div>
+          <p>Kode Akses dibagikan secara <strong>gratis</strong> melalui Saluran WhatsApp host. Bergabung dan salin kodenya!</p>
         </div>
 
         <!-- Steps -->
@@ -134,75 +133,47 @@
           <div class="step-item">
             <div class="step-num">1</div>
             <div class="step-line"></div>
-            <div class="step-text">Transfer ke rekening host</div>
+            <div class="step-text">Klik tombol di bawah untuk buka <b>Saluran WA</b> host</div>
           </div>
           <div class="step-item">
             <div class="step-num">2</div>
             <div class="step-line"></div>
-            <div class="step-text">Isi nama → kirim bukti ke <b>WA host</b></div>
+            <div class="step-text"><b>Follow</b> saluran, lalu cari pesan Kode Akses terbaru</div>
           </div>
           <div class="step-item">
             <div class="step-num">3</div>
             <div class="step-line last"></div>
-            <div class="step-text">Tunggu konfirmasi → dapat <b>Kode Akses</b> otomatis</div>
+            <div class="step-text"><b>Salin kode</b>, kembali ke sini, dan masukkan di tab Masuk</div>
           </div>
         </div>
 
-        <!-- Rekening host -->
-        <div class="pay-info-card" id="gatePayInfo">
-          <div class="pay-info-card-header">
-            <div class="pay-info-card-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-            </div>
-            <div>
-              <div class="pay-info-card-title">Rekening &amp; QRIS Host</div>
-              <div class="pay-info-card-sub">Transfer ke salah satu metode di bawah</div>
-            </div>
+        <!-- WA Channel CTA -->
+        <div class="wa-info-box" style="margin-top:8px">
+          <div class="wa-info-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           </div>
-          <div class="pay-info-card-body" id="gateBankInfo">
-            <div class="loading-bank">
-              <div class="loading-dot"></div>
-              <div class="loading-dot"></div>
-              <div class="loading-dot"></div>
-            </div>
+          <div>
+            <div class="wa-info-title">Saluran WhatsApp Host</div>
+            <div class="wa-info-sub">Kode Akses dibagikan di saluran WA. Klik tombol di bawah untuk langsung bergabung.</div>
           </div>
         </div>
 
-        <form class="gate-form" id="registerForm" novalidate style="margin-top:4px">
-          <!-- Nama -->
-          <div class="form-group">
-            <label class="label" for="regName">Nama Kamu</label>
-            <div class="input-wrap">
-              <span class="input-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </span>
-              <input class="input input-with-icon" type="text" id="regName" placeholder="Nama tampil di nobar" maxlength="24" autocomplete="name">
-            </div>
-            <span class="form-error" id="regNameErr"></span>
-          </div>
+        <a id="waChannelBtn" href="https://whatsapp.com/channel/GANTI_LINK_SALURAN_WA" target="_blank" rel="noopener" class="btn btn-wa btn-lg w-full" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;text-decoration:none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Buka Saluran WA &amp; Ambil Kode
+        </a>
 
-          <!-- WA info box -->
-          <div class="wa-info-box">
-            <div class="wa-info-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </div>
-            <div>
-              <div class="wa-info-title">Kirim Bukti ke WhatsApp Host</div>
-              <div class="wa-info-sub">Setelah isi nama & klik tombol di bawah, WhatsApp akan terbuka otomatis dengan pesan siap kirim. Tinggal attach foto bukti transfer kamu.</div>
-            </div>
-          </div>
+        <div class="gate-divider" style="margin-top:16px"><span>sudah punya kode?</span></div>
 
-          <!-- Security note -->
-          <div class="security-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Kode Akses unik dibuat otomatis oleh sistem — <b>1 user 1 kode</b>, tidak bisa dipakai orang lain.</span>
-          </div>
+        <button class="btn-switch-tab w-full" onclick="document.getElementById('tabLogin').click()">
+          Masuk &amp; Nonton Sekarang
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
 
-          <button type="submit" class="btn btn-wa btn-lg w-full" id="regSubmitBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Daftar &amp; Kirim Bukti ke WA
-          </button>
-        </form>
+        <div class="host-notice" style="margin-top:12px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span><b>Host?</b> Ganti link saluran WA di <code>index.html</code> pada atribut <code>href</code> tombol di atas.</span>
+        </div>
 
       </div><!-- /registerSection -->
 
@@ -219,40 +190,7 @@
 
 <script type="module">
 import { initGatePage } from './js/auth.js';
-import { db } from './js/firebase.js';
-import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 initGatePage();
-
-// Load bank info + QRIS
-onValue(ref(db, 'stream/payment'), snap => {
-  const data = snap.val() || {};
-  const text = data.bankInfo  || '';
-  const qris = data.qrisImage || null;
-  const el   = document.getElementById('gateBankInfo');
-  if (!el) return;
-
-  let html = '';
-  if (qris) {
-    html += `<div class="qris-display">
-      <div class="qris-display-label">QRIS</div>
-      <img src="${qris}" alt="QRIS" class="qris-display-img">
-      <div class="qris-display-hint">Scan QR pakai aplikasi dompet digital apapun</div>
-    </div>`;
-  }
-  if (text) {
-    if (qris) html += `<div class="pay-or-divider"><span>atau transfer manual</span></div>`;
-    html += `<div class="bank-text-list">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<div class="bank-text-row">$&</div>').replace(/\n/g,'')}</div>`;
-    // simpler approach:
-    html = html.replace('<div class="bank-text-list">' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<div class="bank-text-row">$&</div>').replace(/\n/g,'') + '</div>',
-      '<div class="bank-text-list">' +
-      text.split('\n').filter(l=>l.trim()).map(l =>
-        `<div class="bank-text-row">${l.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
-      ).join('') +
-      '</div>');
-  }
-  el.innerHTML = html || '<span style="color:var(--text-2);font-size:13px;padding:8px 0;display:block">Host belum mengisi info rekening.</span>';
-});
 </script>
 </body>
 </html>
